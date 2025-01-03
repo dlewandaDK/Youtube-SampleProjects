@@ -16,7 +16,7 @@ public struct TeamView: View {
     public var body: some View {
         VStack(spacing: 4) {
             if activityFamily != .small {
-                Image(imageName)
+                Image(uiImage: UIImage(named: imageName) ?? UIImage(systemName: "baseball")!)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: imageSize, height: imageSize)
@@ -26,4 +26,15 @@ public struct TeamView: View {
                 .font(.caption.bold())
         }
     }
+}
+
+
+#Preview("Medium") {
+    TeamView(name: "Diamonds", imageName: "DKSLHD_Black")
+        .environment(\.activityFamily, .medium)
+}
+
+#Preview("Small") {
+    TeamView(name: "Diamonds", imageName: "DKSLHD_Black")
+        .environment(\.activityFamily, .small)
 }

@@ -5,7 +5,7 @@ import Testing
 @Test func decodingJSON() async throws {
     let optionalData = """
     {
-        "blueTeamScore" : 2,
+        "awayTeamScore" : 2,
         "matchState" : {
             "inProgress" : {
                 "periodInfo" : {
@@ -15,7 +15,7 @@ import Testing
                 }
             }
         },
-        "redTeamScore" : 1
+        "homeTeamScore" : 1
     }
     """.data(using: .utf8)
 
@@ -25,8 +25,8 @@ import Testing
     decoder.dateDecodingStrategy = .secondsSince1970
     let content = try decoder.decode(ScoreActivityAttributes.ContentState.self, from: jsonData)
 
-    #expect(content.blueTeamScore == 2)
-    #expect(content.redTeamScore == 1)
+    #expect(content.awayTeamScore == 2)
+    #expect(content.homeTeamScore == 1)
 
     if case let .inProgress(periodInfo) = content.matchState {
         #expect(periodInfo.name == "1st half")

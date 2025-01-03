@@ -5,6 +5,6 @@ import WidgetKit
 struct DemoWidgetsBundle: WidgetBundle {
     var body: some Widget {
         DemoWidgets()
-        MatchScoreLiveActivity()
+        GameScoreLiveActivity()
     }
 }

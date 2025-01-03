@@ -26,7 +26,7 @@ public struct TeamScoreView: View {
     }
 
     var image: some View {
-        Image(imageName)
+        Image(uiImage: UIImage(named: imageName) ?? UIImage(systemName: "baseball")!)
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: 28, height: 28)
@@ -36,4 +36,8 @@ public struct TeamScoreView: View {
         Text(score.formatted())
             .monospacedDigit()
     }
+}
+
+#Preview{
+    TeamScoreView(imageName: "DKSLHD_Black", score: 1, isLeading: true)
 }

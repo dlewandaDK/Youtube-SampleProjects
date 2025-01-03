@@ -6,78 +6,24 @@ public struct DemoContent {
     public init() {}
 
     public func notYetStarted() -> Content {
-        .init(matchState: .notYetStarted, blueTeamScore: 0, redTeamScore: 0)
+        .init(gameState: .notYetStarted, awayTeamScore: 0, homeTeamScore: 0)
     }
 
-    public func matchStart() -> Content {
+    public func gameStart() -> Content {
         .init(
-            matchState: .inProgress(
-                periodInfo: .init(
-                    name: "1st half",
-                    currentTime: Date(),
-                    timeLeft: 45.minutes
-                )
+            gameState: .inProgress(
+                inningInfo: .init()
             ),
-            blueTeamScore: 0,
-            redTeamScore: 0
+            awayTeamScore: 0,
+            homeTeamScore: 0
         )
     }
 
-    public func firstGoal() -> Content {
+    public func gameOver() -> Content {
         .init(
-            matchState: .inProgress(
-                periodInfo: .init(
-                    name: "1st half",
-                    currentTime: Date(),
-                    timeLeft: 25.minutes
-                )
-            ),
-            blueTeamScore: 1,
-            redTeamScore: 0
-        )
-    }
-
-    public func halfTime() -> Content {
-        .init(
-            matchState: .paused,
-            blueTeamScore: 1,
-            redTeamScore: 0
-        )
-    }
-
-    public func secondGoal() -> Content {
-        .init(
-            matchState: .inProgress(
-                periodInfo: .init(
-                    name: "2nd half",
-                    currentTime: Date(),
-                    timeLeft: 30.minutes
-                )
-            ),
-            blueTeamScore: 1,
-            redTeamScore: 1
-        )
-    }
-
-    public func thirdGoal() -> Content {
-        .init(
-            matchState: .inProgress(
-                periodInfo: .init(
-                    name: "2nd half",
-                    currentTime: Date(),
-                    timeLeft: 5.minutes
-                )
-            ),
-            blueTeamScore: 2,
-            redTeamScore: 1
-        )
-    }
-
-    public func matchEnded() -> Content {
-        .init(
-            matchState: .finished,
-            blueTeamScore: 2,
-            redTeamScore: 1
+            gameState: .finished,
+            awayTeamScore: 2,
+            homeTeamScore: 1
         )
     }
 }

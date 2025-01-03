@@ -16,136 +16,162 @@ extension JSONEncoder {
     }
 }
 
-func beforeMatch(debug: Bool) throws -> String {
+fileprivate func decode<T>(
+    _ push: PushPayload<T>,
+    _ debug: Bool
+) throws -> String {
+    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
+    return try data.prettyPrintedJSONString
+}
+
+func beforeGame(debug: Bool) throws -> String {
     let push = PushPayload(
         aps: StartApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .notYetStarted,
-                blueTeamScore: 0,
-                redTeamScore: 0
+                gameState: .notYetStarted,
+                awayTeamScore: 0,
+                homeTeamScore: 0
             ),
             attributesType: "ScoreActivityAttributes",
             attributes: ScoreActivityAttributes(
-                blueTeam: .init(
-                    name: "Man United",
-                    imageName: "manchester"
+                awayTeam: .init(
+                    name: "Away",
+                    imageName: "DKSLHD_Black"
                 ),
-                redTeam: .init(
-                    name: "Arsenal",
-                    imageName: "arsenal"
+                homeTeam: .init(
+                    name: "Home",
+                    imageName: "DKSLHD_White"
                 ),
-                matchStartTime: Date()
+                gameStartTime: Date()
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }
 
-func matchStart(debug: Bool) throws -> String {
+func gameStart(debug: Bool) throws -> String {
     let push = PushPayload(
         aps: UpdateApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .inProgress(
-                    periodInfo: .init(
-                        name: "1st half",
-                        currentTime: Date(),
-                        timeLeft: 45 * 60
-                    )
+                gameState: .inProgress(
+                    inningInfo: .init()
                 ),
-                blueTeamScore: 0,
-                redTeamScore: 0
+                awayTeamScore: 0,
+                homeTeamScore: 0
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }
 
-func firstGoal(debug: Bool) throws -> String {
+func firstOut(debug: Bool) throws -> String {
     let push = PushPayload(
         aps: UpdateApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .inProgress(
-                    periodInfo: .init(
-                        name: "1st half",
-                        currentTime: Date(),
-                        timeLeft: 25.minutes
-                    )
+                gameState: .inProgress(
+                    inningInfo: .init(inning: 1, inningState: .top(.one))
                 ),
-                blueTeamScore: 1,
-                redTeamScore: 0
+                awayTeamScore: 0,
+                homeTeamScore: 0
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }
 
-func halfTime(debug: Bool) throws -> String {
+func firstRun(debug: Bool) throws -> String {
     let push = PushPayload(
         aps: UpdateApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .paused,
-                blueTeamScore: 1,
-                redTeamScore: 1
+                gameState: .inProgress(
+                    inningInfo: .init(inning: 1, inningState: .top(.one))
+                ),
+                awayTeamScore: 1,
+                homeTeamScore: 0
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }
 
-func secondGoal(debug: Bool) throws -> String {
+func bottomThird(debug: Bool) throws -> String {
     let push = PushPayload(
         aps: UpdateApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .inProgress(
-                    periodInfo: .init(
-                        name: "2nd half",
-                        currentTime: Date(),
-                        timeLeft: 30.minutes
-                    )
+                gameState: .inProgress(
+                    inningInfo: .init(inning: 3, inningState: .bottom(.two))
                 ),
-                blueTeamScore: 1,
-                redTeamScore: 1
+                awayTeamScore: 1,
+                homeTeamScore: 0
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }
 
-func thirdGoal(debug: Bool) throws -> String {
+func homeRuns(debug: Bool) throws -> String  {
     let push = PushPayload(
         aps: UpdateApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .inProgress(
-                    periodInfo: .init(
-                        name: "2nd half",
-                        currentTime: Date(),
-                        timeLeft: 5.minutes
-                    )
+                gameState: .inProgress(
+                    inningInfo: .init(inning: 3, inningState: .bottom(.two))
                 ),
-                blueTeamScore: 2,
-                redTeamScore: 1
+                awayTeamScore: 1,
+                homeTeamScore: 3
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }
 
-func matchEnd(debug: Bool) throws -> String {
+func seventhInningStretch(debug: Bool) throws -> String  {
+    let push = PushPayload(
+        aps: UpdateApsContent(
+            contentState: ScoreActivityAttributes.ContentState(
+                gameState: .inProgress(
+                    inningInfo: .init(inning: 7, inningState: .middle)
+                ),
+                awayTeamScore: 1,
+                homeTeamScore: 3
+            )
+        )
+    )
+
+    return try decode(push, debug)
+}
+
+func endEighth(debug: Bool) throws -> String  {
+    let push = PushPayload(
+        aps: UpdateApsContent(
+            contentState: ScoreActivityAttributes.ContentState(
+                gameState: .inProgress(
+                    inningInfo: .init(inning: 8, inningState: .end)
+                ),
+                awayTeamScore: 3,
+                homeTeamScore: 3
+            )
+        )
+    )
+
+    return try decode(push, debug)
+}
+
+func final(debug: Bool) throws -> String  {
     let push = PushPayload(
         aps: EndApsContent(
             contentState: ScoreActivityAttributes.ContentState(
-                matchState: .finished,
-                blueTeamScore: 2,
-                redTeamScore: 1
+                gameState: .finished,
+                awayTeamScore: 3,
+                homeTeamScore: 4
             )
         )
     )
-    let data = try JSONEncoder.pushDecoder(debug: debug).encode(push)
-    return try data.prettyPrintedJSONString
+
+    return try decode(push, debug)
 }

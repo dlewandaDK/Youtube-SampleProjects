@@ -9,46 +9,78 @@ import WidgetKit
 #endif
 
 public struct ScoreActivityAttributes: Codable {
-    public let blueTeam: Team
-    public let redTeam: Team
-    public let matchStartTime: Date
+    public let awayTeam: Team
+    public let homeTeam: Team
+    public let gameStartTime: Date
 
-    public init(blueTeam: Team, redTeam: Team, matchStartTime: Date) {
-        self.blueTeam = blueTeam
-        self.redTeam = redTeam
-        self.matchStartTime = matchStartTime
+    public init(awayTeam: Team, homeTeam: Team, gameStartTime: Date) {
+        self.awayTeam = awayTeam
+        self.homeTeam = homeTeam
+        self.gameStartTime = gameStartTime
     }
 
     public struct ContentState: Codable, Hashable {
-        public let matchState: MatchState
-        public let blueTeamScore: Int
-        public let redTeamScore: Int
+        public let gameState: GameState
+        public let awayTeamScore: Int
+        public let homeTeamScore: Int
 
-        public init(matchState: MatchState, blueTeamScore: Int, redTeamScore: Int) {
-            self.matchState = matchState
-            self.blueTeamScore = blueTeamScore
-            self.redTeamScore = redTeamScore
+        public init(gameState: GameState, awayTeamScore: Int, homeTeamScore: Int) {
+            self.gameState = gameState
+            self.awayTeamScore = awayTeamScore
+            self.homeTeamScore = homeTeamScore
         }
     }
 
-    public enum MatchState: Codable, Hashable {
+    public enum GameState: Codable, Hashable {
         case notYetStarted
-        case inProgress(periodInfo: PeriodInfo)
+        case inProgress(inningInfo: InningInfo)
         case paused
         case finished
     }
 
-    public struct PeriodInfo: Codable, Hashable {
-        public let name: String
-        public let currentTime: Date
-        public let timeLeft: TimeInterval
+    public struct InningInfo: Codable, Hashable {
+        public let inning: Int
+        public let inningState: InningState
 
-        public var endTime: Date { currentTime.addingTimeInterval(timeLeft) }
+        public init(inning: Int = 1, inningState: InningState = .top(.zero)) {
+            self.inning = inning
+            self.inningState = inningState
+        }
 
-        public init(name: String, currentTime: Date, timeLeft: TimeInterval) {
-            self.name = name
-            self.currentTime = currentTime
-            self.timeLeft = timeLeft
+        public var displayString: String {
+            "\(inningState.displayString) \(inning)"
+        }
+    }
+
+    public enum InningState: Codable, Hashable {
+        case top(Outs), middle, bottom(Outs), end
+
+        var displayString: String {
+            switch self {
+                case .top:
+                    "Top"
+                case .middle:
+                    "Mid"
+                case .bottom:
+                    "Bot"
+                case .end:
+                    "End"
+            }
+        }
+    }
+
+    public enum Outs: Codable, Hashable {
+        case zero, one, two
+
+        public var intValue: Int {
+            switch self {
+                case .zero:
+                    0
+                case .one:
+                    1
+                case .two:
+                    2
+            }
         }
     }
 

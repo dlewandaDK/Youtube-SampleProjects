@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MatchStartTimeView: View {
+struct GameStartTimeView: View {
     let startTime: Date
 
     var body: some View {

@@ -64,7 +64,8 @@
 		9B390A8A2CCD540900F96E83 /* Exceptions for "DemoWidgets" folder in "LiveActivityDemo" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				LiveActivities/ScoreActivity/MatchScoreLiveActivity.swift,
+				LiveActivities/ScoreActivity/GameScoreLiveActivity.swift,
+				Resources/Assets.xcassets,
 			);
 			target = 9B810FAC2CCC39DD0069B1DA /* LiveActivityDemo */;
 		};
@@ -74,6 +75,13 @@
 				Resources/Info.plist,
 			);
 			target = 9B97F6D72CCC3B08003EFF87 /* DemoWidgetsExtension */;
+		};
+		A3DBB18D2D1AFDB000CC53F4 /* Exceptions for "DemoWidgets" folder in "LiveActivityDemoTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Assets.xcassets,
+			);
+			target = 9B810FBC2CCC39DE0069B1DA /* LiveActivityDemoTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -92,6 +100,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				9B390A8A2CCD540900F96E83 /* Exceptions for "DemoWidgets" folder in "LiveActivityDemo" target */,
+				A3DBB18D2D1AFDB000CC53F4 /* Exceptions for "DemoWidgets" folder in "LiveActivityDemoTests" target */,
 				9B97F6EE2CCC3B09003EFF87 /* Exceptions for "DemoWidgets" folder in "DemoWidgetsExtension" target */,
 			);
 			path = DemoWidgets;
@@ -474,7 +483,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LiveActivityDemo/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 4E6CZX3H5W;
+				DEVELOPMENT_TEAM = 56HBP847HW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "LiveActivity Demo";
@@ -489,7 +498,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fespinozacast.youtube-sample.LiveActivityDemo";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diamondkinetics.fespinozacast.youtube-sample.LiveActivityDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -506,7 +515,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LiveActivityDemo/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 4E6CZX3H5W;
+				DEVELOPMENT_TEAM = 56HBP847HW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "LiveActivity Demo";
@@ -521,7 +530,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fespinozacast.youtube-sample.LiveActivityDemo";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diamondkinetics.fespinozacast.youtube-sample.LiveActivityDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -535,11 +544,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4E6CZX3H5W;
+				DEVELOPMENT_TEAM = 56HBP847HW;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fespinozacast.youtube-sample.LiveActivityDemoTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diamondkinetics.fespinozacast.youtube-sample.LiveActivityDemoTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -554,11 +563,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4E6CZX3H5W;
+				DEVELOPMENT_TEAM = 56HBP847HW;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fespinozacast.youtube-sample.LiveActivityDemoTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diamondkinetics.fespinozacast.youtube-sample.LiveActivityDemoTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -574,7 +583,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4E6CZX3H5W;
+				DEVELOPMENT_TEAM = 56HBP847HW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DemoWidgets/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DemoWidgets;
@@ -585,7 +594,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fespinozacast.youtube-sample.LiveActivityDemo.DemoWidgets";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diamondkinetics.fespinozacast.youtube-sample.LiveActivityDemo.DemoWidgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -601,7 +610,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4E6CZX3H5W;
+				DEVELOPMENT_TEAM = 56HBP847HW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DemoWidgets/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DemoWidgets;
@@ -612,7 +621,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fespinozacast.youtube-sample.LiveActivityDemo.DemoWidgets";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diamondkinetics.fespinozacast.youtube-sample.LiveActivityDemo.DemoWidgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

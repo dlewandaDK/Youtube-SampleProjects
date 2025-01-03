@@ -1,14 +1,17 @@
 import SwiftUI
 
 public struct ScoreView: View {
-    let blue: Int
-    let red: Int
+    let away: Int
+    let home: Int
 
     @Environment(\.activityFamily) private var activityFamily
 
-    public init(blue: Int, red: Int) {
-        self.blue = blue
-        self.red = red
+    public init(
+        away: Int,
+        home: Int
+    ) {
+        self.away = away
+        self.home = home
     }
 
     var spacing: CGFloat { activityFamily == .small ? 14 : 21 }
@@ -16,31 +19,35 @@ public struct ScoreView: View {
     var separatorSize: CGFloat { activityFamily == .small ? 27 : 38 }
 
     public var body: some View {
-        HStack(spacing: spacing) {
-            Text(blue.formatted())
+        HStack {
+            Text(away.formatted())
                 .font(.system(size: scoreSize, weight: .bold).monospacedDigit())
 
-            Text(":")
-                .font(.system(size: separatorSize, weight: .bold))
-                .foregroundStyle(.secondary)
-
-            Text(red.formatted())
+            Text(home.formatted())
                 .font(.system(size: scoreSize, weight: .bold).monospacedDigit())
         }
     }
 
     public struct MinimalView: View {
-        let blue: Int
-        let red: Int
+        let away: Int
+        let home: Int
 
-        public init(blue: Int, red: Int) {
-            self.blue = blue
-            self.red = red
+        public init(away: Int, home: Int) {
+            self.away = away
+            self.home = home
         }
 
         public var body: some View {
-            Text("\(blue.formatted()) : \(red.formatted())")
+            Text("\(away.formatted()) : \(home.formatted())")
                 .monospacedDigit()
         }
     }
+}
+
+#Preview {
+    ScoreView(away: 0, home: 0)
+}
+
+#Preview("Minimal") {
+    ScoreView.MinimalView(away: 0, home: 0)
 }

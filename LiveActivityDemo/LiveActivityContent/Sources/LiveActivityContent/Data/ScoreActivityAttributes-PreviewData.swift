@@ -2,28 +2,28 @@ import Foundation
 
 public extension ScoreActivityAttributes {
     static func previewValue(
-        blueTeam: Team = .previewValue(
-            name: "Man United",
-            imageName: "manchester"
+        awayTeam: Team = .previewValue(
+            name: "Away",
+            imageName: "DKSLHD_Black"
         ),
-        redTeam: Team = .previewValue(
-            name: "Arsenal",
-            imageName: "arsenal"
+        homeTeam: Team = .previewValue(
+            name: "Home",
+            imageName: "DKSLHD_White"
         ),
-        matchStartTime: Date = Date()
+        gameStartTime: Date = Date()
     ) -> Self {
         .init(
-            blueTeam: blueTeam,
-            redTeam: redTeam,
-            matchStartTime: matchStartTime
+            awayTeam: awayTeam,
+            homeTeam: homeTeam,
+            gameStartTime: gameStartTime
         )
     }
 }
 
 public extension ScoreActivityAttributes.Team {
     static func previewValue(
-        name: String = "Man United",
-        imageName: String = "manchester"
+        name: String = "DK",
+        imageName: String = "DKSLHD_Black"
     ) -> Self {
         .init(
             name: name,
@@ -32,30 +32,20 @@ public extension ScoreActivityAttributes.Team {
     }
 }
 
-public extension ScoreActivityAttributes.PeriodInfo {
+public extension ScoreActivityAttributes.InningInfo {
     static func previewValue(
-        name: String = "1st Half",
-        currentTime: Date = Date(),
-        timeLeft: TimeInterval = 45.minutes
+        name: String = "top first"
     ) -> Self {
-        .init(
-            name: name,
-            currentTime: currentTime,
-            timeLeft: timeLeft
-        )
+        .init(inning: 1, inningState: .top(.one))
     }
 }
 
 public extension ScoreActivityAttributes.ContentState {
     static func previewValue(
-        matchState: ScoreActivityAttributes.MatchState = .inProgress(periodInfo: .previewValue(timeLeft: 32.minutes)),
-        blueTeamScore: Int = 2,
-        redTeamScore: Int = 1
+        gameState: ScoreActivityAttributes.GameState = .inProgress(inningInfo: .init(inning: 7, inningState: .top(.one))),
+        awayTeamScore: Int = 2,
+        homeTeamScore: Int = 1
     ) -> Self {
-        .init(
-            matchState: matchState,
-            blueTeamScore: blueTeamScore,
-            redTeamScore: redTeamScore
-        )
+        .init(gameState: gameState, awayTeamScore: awayTeamScore, homeTeamScore: homeTeamScore)
     }
 }

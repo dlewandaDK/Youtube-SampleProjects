@@ -2,31 +2,190 @@ import ActivityKit
 import LiveActivityContent
 import SwiftUI
 
+@Observable class ViewModel {
+    typealias InningInfo = ScoreActivityAttributes.InningInfo
+    typealias GameState = ScoreActivityAttributes.GameState
+    typealias ContentState = ScoreActivityAttributes.ContentState
+
+    let maxInnings = 9 // TODO: Make dynamic to support shorter games?
+
+    var awayTeamScore = 0
+    var homeTeamScore = 0
+    var gameState: GameState = .notYetStarted
+    func advanceGame() {
+        guard gameState != .finished else {
+            return
+        }
+
+        switch gameState {
+            case .notYetStarted:
+                gameState = .inProgress(inningInfo: InningInfo())
+            case .inProgress(inningInfo: let inningInfo):
+                switch inningInfo.inningState {
+                    case .top(let outs):
+                        if inningInfo.inning >= maxInnings && awayTeamScore > homeTeamScore {
+                            gameState = .finished // game over, away team wins
+                        } else {
+                            switch outs {
+                                case .zero:
+                                    gameState = .inProgress(
+                                        inningInfo: InningInfo(
+                                            inning: inningInfo.inning,
+                                            inningState: .top(.one)
+                                        )
+                                    )
+                                case .one:
+                                    gameState = .inProgress(
+                                        inningInfo: InningInfo(
+                                            inning: inningInfo.inning,
+                                            inningState: .top(.two)
+                                        )
+                                    )
+                                case .two:
+                                    gameState = .inProgress(
+                                        inningInfo: InningInfo(
+                                            inning: inningInfo.inning,
+                                            inningState: .middle
+                                        )
+                                    )
+                            }
+                        }
+                    case .middle:
+                        gameState = .inProgress(
+                            inningInfo: InningInfo(
+                                inning: inningInfo.inning,
+                                inningState: .bottom(.zero)
+                            )
+                        )
+                    case .bottom(let outs):
+                        switch outs {
+                            case .zero:
+                                gameState = .inProgress(
+                                    inningInfo: InningInfo(
+                                        inning: inningInfo.inning,
+                                        inningState: .bottom(.one)
+                                    )
+                                )
+                            case .one:
+                                gameState = .inProgress(
+                                    inningInfo: InningInfo(
+                                        inning: inningInfo.inning,
+                                        inningState: .bottom(.two)
+                                    )
+                                )
+                            case .two:
+                                gameState = .inProgress(
+                                    inningInfo: InningInfo(
+                                        inning: inningInfo.inning,
+                                        inningState: .end
+                                    )
+                                )
+                        }
+                    case .end:
+                        if inningInfo.inning >= maxInnings && homeTeamScore > awayTeamScore {
+                            gameState = .finished // game over, home team wins
+                        } else {
+                            gameState =
+                                .inProgress(
+                                    inningInfo: InningInfo(
+                                        inning: inningInfo.inning + 1,
+                                        inningState: .top(.zero)
+                                    )
+                                )
+                        }
+                }
+            case .paused:
+                gameState = .paused // TODO: Implement starting and ending delay
+            case .finished:
+                gameState = .finished // Shouldn't ever get here
+        }
+    }
+
+    func endGame() {
+        gameState = .finished
+    }
+
+    func awayTeamScored() {
+        awayTeamScore += 1
+    }
+
+    func homeTeamScored() {
+        homeTeamScore += 1
+    }
+
+    var currentState: ScoreActivityAttributes.ContentState {
+        ContentState(
+            gameState: gameState,
+            awayTeamScore: awayTeamScore,
+            homeTeamScore: homeTeamScore
+        )
+    }
+}
+
 struct ContentView: View {
     @State private var activity: Activity<ScoreActivityAttributes>?
     @State private var allActivities: [Activity<ScoreActivityAttributes>] = []
 
     @State private var demoContent = DemoContent()
+    @State private var viewModel = ViewModel()
+    @State private var useBroadcast = false
+    @State private var channelName: String = ""
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading, spacing: 16) {
+        VStack {
+            Toggle(useBroadcast ? "Use Broadcast" : "Use Token", isOn: $useBroadcast)
+            if useBroadcast {
+                TextField("Channel Name", text: $channelName)
+            }
+            VStack {
                 Text("Activity Operations").font(.headline)
 
                 if let activity {
                     Text("Current Activity: \(activity.id)")
                 }
 
-                HStack {
-                    Button("Start", action: startActivity)
-
-                    Menu("Update", content: {
-                        Button("match start", action: { updateActivity(newState: demoContent.matchStart()) })
-                        Button("first goal", action: { updateActivity(newState: demoContent.firstGoal()) })
-                        Button("half time", action: { updateActivity(newState: demoContent.halfTime()) })
-                        Button("second goal", action: { updateActivity(newState: demoContent.secondGoal()) })
-                        Button("third goal", action: { updateActivity(newState: demoContent.thirdGoal()) })
+                Form {
+                    Button("Before", action: startActivity)
+                    Button("Game start", action: {
+                        updateActivity(newState: viewModel.currentState)
                     })
+
+                    Group {
+                        Button(
+                            "Advance Inning",
+                            action: {
+                                viewModel
+                                    .advanceGame()
+                                updateActivity(
+                                    newState: viewModel.currentState
+                                )
+                            }
+                        )
+
+                        HStack {
+                            Button(
+                                "Away Team Scored",
+                                action: {
+                                    viewModel
+                                        .awayTeamScored()
+                                    updateActivity(
+                                        newState: viewModel.currentState
+                                    )
+                                }
+                            )
+                            Spacer()
+                            Button(
+                                "Home Team Scored",
+                                action: {
+                                    viewModel
+                                        .homeTeamScored()
+                                    updateActivity(
+                                        newState: viewModel.currentState
+                                    )
+                                }
+                            )
+                        }
+                    }
                     .disabled(activity == nil)
 
                     Button("End", action: finishActivity)
@@ -110,9 +269,9 @@ struct ContentView: View {
         let attrs = ScoreActivityAttributes.previewValue()
 
         let initialState = ScoreActivityAttributes.ContentState.previewValue(
-            matchState: .notYetStarted,
-            blueTeamScore: 0,
-            redTeamScore: 0
+            gameState: .notYetStarted,
+            awayTeamScore: 0,
+            homeTeamScore: 0
         )
         let content = ActivityContent(state: initialState, staleDate: nil)
 
@@ -120,7 +279,7 @@ struct ContentView: View {
             activity = try Activity.request(
                 attributes: attrs,
                 content: content,
-                pushType: .token
+                pushType: useBroadcast ? .channel(channelName) : .token
             )
 
         } catch {
@@ -137,7 +296,7 @@ struct ContentView: View {
                 content,
                 alertConfiguration: .init(
                     title: "New content!",
-                    body: "The match is getting interesting",
+                    body: "The game is getting interesting",
                     sound: .default
                 )
             )
@@ -148,7 +307,8 @@ struct ContentView: View {
         guard let activity else { return }
 
         Task {
-            let finalContent = demoContent.matchEnded()
+            viewModel.endGame()
+            let finalContent = viewModel.currentState
             let dismissalPolicy: ActivityUIDismissalPolicy = .default
 
             await activity.end(

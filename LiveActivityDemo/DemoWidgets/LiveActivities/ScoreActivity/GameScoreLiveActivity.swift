@@ -5,54 +5,54 @@ import LiveActivityUI
 import SwiftUI
 import WidgetKit
 
-struct MatchScoreLiveActivity: Widget {
+struct GameScoreLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: ScoreActivityAttributes.self) { context in
-            MatchView(attrs: context.attributes, state: context.state)
+            GameView(attrs: context.attributes, state: context.state)
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     TeamView(
-                        name: context.attributes.blueTeam.name,
-                        imageName: context.attributes.blueTeam.imageName
+                        name: context.attributes.awayTeam.name,
+                        imageName: context.attributes.awayTeam.imageName
                     )
                     .padding(.leading)
                 }
 
                 DynamicIslandExpandedRegion(.center) {
-                    MatchStateView.TopView(attrs: context.attributes, state: context.state)
+                    GameStateView.TopView(attrs: context.attributes, state: context.state)
                 }
 
                 DynamicIslandExpandedRegion(.trailing) {
                     TeamView(
-                        name: context.attributes.redTeam.name,
-                        imageName: context.attributes.redTeam.imageName
+                        name: context.attributes.homeTeam.name,
+                        imageName: context.attributes.homeTeam.imageName
                     )
                     .padding(.trailing)
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
-                    MatchStateView.BottomView(attrs: context.attributes, state: context.state)
+                    GameStateView.BottomView(attrs: context.attributes, state: context.state)
                 }
 
             } compactLeading: {
                 TeamScoreView(
-                    imageName: context.attributes.blueTeam.imageName,
-                    score: context.state.blueTeamScore,
+                    imageName: context.attributes.awayTeam.imageName,
+                    score: context.state.awayTeamScore,
                     isLeading: true
                 )
 
             } compactTrailing: {
                 TeamScoreView(
-                    imageName: context.attributes.redTeam.imageName,
-                    score: context.state.redTeamScore,
+                    imageName: context.attributes.homeTeam.imageName,
+                    score: context.state.homeTeamScore,
                     isLeading: false
                 )
 
             } minimal: {
                 ScoreView.MinimalView(
-                    blue: context.state.blueTeamScore,
-                    red: context.state.redTeamScore
+                    away: context.state.awayTeamScore,
+                    home: context.state.homeTeamScore
                 )
             }
         }
@@ -65,36 +65,36 @@ struct MatchScoreLiveActivity: Widget {
     as: .content,
     using: ScoreActivityAttributes.previewValue()
 ) {
-    MatchScoreLiveActivity()
+    GameScoreLiveActivity()
 } contentStates: {
     ScoreActivityAttributes.ContentState.previewValue(
-        matchState: .notYetStarted,
-        blueTeamScore: 0,
-        redTeamScore: 0
+        gameState: .notYetStarted,
+        awayTeamScore: 0,
+        homeTeamScore: 0
     )
     ScoreActivityAttributes.ContentState.previewValue(
-        matchState: .inProgress(periodInfo: .previewValue(timeLeft: 30.minutes)),
-        blueTeamScore: 0,
-        redTeamScore: 1
+        gameState: .inProgress(inningInfo: .init(inning: 1, inningState: .bottom(.two))),
+        awayTeamScore: 0,
+        homeTeamScore: 1
     )
     ScoreActivityAttributes.ContentState.previewValue(
-        matchState: .inProgress(periodInfo: .previewValue(timeLeft: 5.minutes)),
-        blueTeamScore: 1,
-        redTeamScore: 1
+        gameState: .inProgress(inningInfo: .init(inning: 3, inningState: .middle)),
+        awayTeamScore: 1,
+        homeTeamScore: 1
     )
     ScoreActivityAttributes.ContentState.previewValue(
-        matchState: .paused,
-        blueTeamScore: 2,
-        redTeamScore: 1
+        gameState: .paused,
+        awayTeamScore: 2,
+        homeTeamScore: 1
     )
     ScoreActivityAttributes.ContentState.previewValue(
-        matchState: .inProgress(periodInfo: .previewValue(name: "2nd Half", timeLeft: 20.minutes)),
-        blueTeamScore: 2,
-        redTeamScore: 1
+        gameState: .inProgress(inningInfo: .init(inning: 8, inningState: .bottom(.two))),
+        awayTeamScore: 2,
+        homeTeamScore: 1
     )
     ScoreActivityAttributes.ContentState.previewValue(
-        matchState: .finished,
-        blueTeamScore: 2,
-        redTeamScore: 1
+        gameState: .finished,
+        awayTeamScore: 2,
+        homeTeamScore: 1
     )
 }
